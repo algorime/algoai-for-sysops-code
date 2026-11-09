@@ -1,11 +1,13 @@
 // AlgoAI for SysOps: welcome screen shown over the app on every page load until the user closes it.
 import { useState } from "react";
 
-import builtByAlgorimeUrl from "../../../../assets/algorime/built-by-algorime.png";
+import builtByAlgorimeUrl from "../../../../assets/algorime/built-by-algorime-dark-blue.png";
 import { AlertDialog, AlertDialogFooter, AlertDialogPopup } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
 
 const ALGORIME_URL = "https://www.algorime.it";
+// Background of the Built By Algorime logo, also used for the screen's border.
+const ALGORIME_DARK_BLUE = "#13294B";
 
 // Module state, so remounting the app shell does not show it again before the next page load.
 let closedThisPageLoad = false;
@@ -22,6 +24,8 @@ export function AlgoAiWelcomeSplash() {
     <AlertDialog open={open} onOpenChange={() => {}}>
       <AlertDialogPopup
         className="max-w-xl"
+        // Brand border kept here rather than as an AlertDialogPopup variant, so upstream files stay untouched.
+        style={{ borderWidth: 2, borderColor: ALGORIME_DARK_BLUE }}
         aria-labelledby="algoai-welcome-title"
         aria-describedby="algoai-welcome-description"
       >
@@ -31,9 +35,9 @@ export function AlgoAiWelcomeSplash() {
             target="_blank"
             rel="noreferrer noopener"
             aria-label="Algorime website"
-            className="rounded-xl bg-white px-4 py-3 outline-hidden ring-ring focus-visible:ring-2 focus-visible:ring-inset"
+            className="rounded-xl outline-hidden ring-ring focus-visible:ring-2 focus-visible:ring-inset"
           >
-            <img src={builtByAlgorimeUrl} alt="Built by Algorime" className="h-24 w-auto" />
+            <img src={builtByAlgorimeUrl} alt="Built by Algorime" className="h-28 w-auto" />
           </a>
           {/* The dialog title and description styles are too small for a welcome screen. */}
           <h2
