@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-// Serves this fork's web build in front of an existing T3 Code server: static files come
-// from apps/web/dist, backend routes are proxied to the server, so the branded client
-// works on the server's own projects, threads, providers and environments.
-//
+// Serves this fork's web build in front of an existing T3 Code server, proxying backend
+// routes, so the branded client works on that server's data. HTTPS with --tls-cert/--tls-key.
 //   node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773
 import * as NodeFS from "node:fs";
 import * as NodeHttp from "node:http";
+import * as NodeHttps from "node:https";
 import * as NodeNet from "node:net";
 import * as NodePath from "node:path";
 import * as NodeUtil from "node:util";
@@ -15,6 +14,8 @@ const { values } = NodeUtil.parseArgs({
     listen: { type: "string", default: "100.100.0.12:3780" },
     backend: { type: "string", default: "100.100.0.12:3773" },
     dist: { type: "string", default: NodePath.join(import.meta.dirname, "../apps/web/dist") },
+    "tls-cert": { type: "string" },
+    "tls-key": { type: "string" },
   },
 });
 
@@ -72,7 +73,18 @@ function serveStatic(req, res, pathname) {
   NodeFS.createReadStream(filePath).pipe(res);
 }
 
-const server = NodeHttp.createServer((req, res) => {
+if ((values["tls-cert"] === undefined) !== (values["tls-key"] === undefined)) {
+  throw new Error("--tls-cert and --tls-key must be given together.");
+}
+const tls =
+  values["tls-cert"] === undefined
+    ? null
+    : {
+        cert: NodeFS.readFileSync(values["tls-cert"]),
+        key: NodeFS.readFileSync(values["tls-key"]),
+      };
+
+function handleRequest(req, res) {
   const { pathname } = new URL(req.url, "http://localhost");
   const prefix = proxiedPrefix(pathname);
   if (!prefix) return serveStatic(req, res, pathname);
@@ -95,7 +107,10 @@ const server = NodeHttp.createServer((req, res) => {
     res.end();
   });
   req.pipe(upstream);
-});
+}
+
+const server =
+  tls === null ? NodeHttp.createServer(handleRequest) : NodeHttps.createServer(tls, handleRequest);
 
 server.on("upgrade", (req, socket, head) => {
   const { pathname } = new URL(req.url, "http://localhost");
@@ -118,6 +133,6 @@ server.on("upgrade", (req, socket, head) => {
 
 server.listen(listen.port, listen.host, () => {
   console.log(
-    `AlgoAI web on http://${listen.host}:${listen.port} -> T3 server ${backend.host}:${backend.port}`,
+    `AlgoAI web on ${tls === null ? "http" : "https"}://${listen.host}:${listen.port} -> T3 server ${backend.host}:${backend.port}`,
   );
 });
