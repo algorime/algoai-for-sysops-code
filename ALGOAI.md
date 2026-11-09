@@ -31,6 +31,7 @@ The branded web client is served on `algodev01` at `http://100.100.0.12:3780` by
 | `algoai-v0.1.7-3` | `algoai/v0.1.7` | `v0.1.7`      | Based on T3 Code description within 200 characters (upstream lint rule) |
 | `algoai-v0.1.7-4` | `algoai/v0.1.7` | `v0.1.7`      | welcome screen on every page load                                       |
 | `algoai-v0.1.7-5` | `algoai/v0.1.7` | `v0.1.7`      | new Built By Algorime logo and welcome subtitle                         |
+| `algoai-v0.1.7-6` | `algoai/v0.1.7` | `v0.1.7`      | logo on dark blue, border around the welcome screen                     |
 
 ## Changes
 
@@ -62,10 +63,10 @@ The branded web client is served on `algodev01` at `http://100.100.0.12:3780` by
 
 ### 4. Welcome screen on every page load
 
-- **What:** when the app finishes loading, a welcome screen opens over it: the "Built By Algorime" logo, linked to https://www.algorime.it, the title "AlgoAI for SysOps and DevOps" and the line "The Algorime AI environment for SysOps and DevOps activities that will change your project and development strategy. Enjoy it!". It stays until the user presses Close; Escape and clicks outside do nothing. It shows again on each page load or reload, not when moving around inside the app.
+- **What:** when the app finishes loading, a welcome screen opens over it: the "Built By Algorime" logo on a dark blue (`#13294B`) background, linked to https://www.algorime.it, the title "AlgoAI for SysOps and DevOps" and the line "The Algorime AI environment for SysOps and DevOps activities that will change your project and development strategy. Enjoy it!". The screen has a 2 px dark blue border. It stays until the user presses Close; Escape and clicks outside do nothing. It shows again on each page load or reload, not when moving around inside the app.
 - **Why:** presents the product and Algorime every time the client is opened.
 - **Files:**
-  - new: `apps/web/src/components/AlgoAiWelcomeSplash.tsx`, `assets/algorime/built-by-algorime.png` (900x325, transparent, the "Built By Algorime" logo provided by Algorime, also kept in the vault's `sources/`)
+  - new: `apps/web/src/components/AlgoAiWelcomeSplash.tsx`, `assets/algorime/built-by-algorime-dark-blue.png` (996x397, the transparent "Built By Algorime" logo provided by Algorime on a rounded `#13294B` background; both versions are kept in the vault's `sources/`)
   - changed: `apps/web/src/routes/__root.tsx` (import and one line next to `ConfirmDialogHost`)
 
 ### 5. This file
