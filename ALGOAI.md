@@ -24,9 +24,10 @@ git diff v0.1.7 algoai/v0.1.7
 
 The branded web client is served on `algodev01` at `http://100.100.0.12:3780` by the systemd user service `algoai-web.service`, in front of the existing T3 Code server on `100.100.0.12:3773`. It works on that server's projects, threads, providers and environments. The server itself is the official T3 Code build and is not built from this repo.
 
-| Deploy tag        | Branch          | Upstream base | Notes                |
-| ----------------- | --------------- | ------------- | -------------------- |
-| `algoai-v0.1.7-1` | `algoai/v0.1.7` | `v0.1.7`      | first branded client |
+| Deploy tag        | Branch          | Upstream base | Notes                                                   |
+| ----------------- | --------------- | ------------- | ------------------------------------------------------- |
+| `algoai-v0.1.7-1` | `algoai/v0.1.7` | `v0.1.7`      | first branded client                                    |
+| `algoai-v0.1.7-2` | `algoai/v0.1.7` | `v0.1.7`      | T3 Code's MIT notice and origin row in Settings → Legal |
 
 ## Changes
 
