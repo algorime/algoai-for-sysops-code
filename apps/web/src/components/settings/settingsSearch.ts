@@ -891,6 +891,12 @@ export const SETTINGS_SEARCH_ITEMS = [
     to: "/settings/about",
   },
   {
+    id: "based-on-t3-code",
+    title: "Based on T3 Code",
+    to: "/settings/about",
+    searchTerms: ["algoai algorime t3 tools mit license origin"],
+  },
+  {
     id: "keybindings",
     title: "Keybindings",
     to: "/settings/keybindings",
