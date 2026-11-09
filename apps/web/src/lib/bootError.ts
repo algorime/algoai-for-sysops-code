@@ -2,7 +2,8 @@ import type { DesktopBridge, DesktopUpdateState } from "@t3tools/contracts";
 
 const FALLBACK_TRIAGE_COMMAND = "npx t3 triage";
 const DOWNLOAD_URL = "https://t3.codes/download";
-const ISSUE_URL = "https://github.com/pingdotgg/t3code/issues/new";
+// AlgoAI for SysOps: start failures of this client are reported to Algorime, not to upstream.
+const ISSUE_URL = "https://github.com/algorime/algoai-for-sysops/issues/new";
 const LAST_FAILURE_KEY = "t3code:boot-failed-at";
 const REPEAT_FAILURE_MS = 5 * 60_000;
 const MAX_CAUSES = 3;
@@ -274,7 +275,7 @@ export function showBootError(error: unknown) {
   };
 
   const message = element("div", {}, [
-    element("h1", { textContent: "T3 Code failed to start" }),
+    element("h1", { textContent: "AlgoAI for SysOps failed to start" }),
     element("p", {
       textContent: offline
         ? "This browser appears to be offline. Check the connection, then reload."
@@ -343,8 +344,7 @@ export function showBootError(error: unknown) {
   );
 
   const issue = new URL(ISSUE_URL);
-  issue.searchParams.set("template", "bug_report.yml");
-  issue.searchParams.set("title", "T3 Code failed to start");
+  issue.searchParams.set("title", "AlgoAI for SysOps failed to start");
   issue.searchParams.set("area", "apps/web");
   issue.searchParams.set("version", `${environment.version} (${environment.channel})`);
   issue.searchParams.set("environment", `${environment.surface}, ${environment.platform}`);

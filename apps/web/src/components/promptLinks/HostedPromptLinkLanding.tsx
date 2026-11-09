@@ -149,7 +149,7 @@ function HostedPromptLinkLanding({
         <Alert className="mt-5" variant="error">
           <AlertTitle>This prompt had hidden characters, it may be malicious</AlertTitle>
           <AlertDescription>
-            T3 Code removed {prompt.hiddenCharacters} hidden character
+            AlgoAI for SysOps removed {prompt.hiddenCharacters} hidden character
             {prompt.hiddenCharacters === 1 ? "" : "s"}. Read the prompt before you send it.
           </AlertDescription>
         </Alert>
