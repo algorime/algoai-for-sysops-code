@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Serves this fork's web build in front of an existing T3 Code server, proxying backend
-// routes, so the branded client works on that server's data. HTTPS with --tls-cert/--tls-key.
+// routes, so the branded client works on that server's data. HTTPS with --tls-cert/--tls-key,
+// plus plain HTTP on the same port with --allow-http.
 //   node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773
 import * as NodeFS from "node:fs";
 import * as NodeHttp from "node:http";
@@ -16,6 +17,7 @@ const { values } = NodeUtil.parseArgs({
     dist: { type: "string", default: NodePath.join(import.meta.dirname, "../apps/web/dist") },
     "tls-cert": { type: "string" },
     "tls-key": { type: "string" },
+    "allow-http": { type: "boolean", default: false },
   },
 });
 
@@ -109,10 +111,7 @@ function handleRequest(req, res) {
   req.pipe(upstream);
 }
 
-const server =
-  tls === null ? NodeHttp.createServer(handleRequest) : NodeHttps.createServer(tls, handleRequest);
-
-server.on("upgrade", (req, socket, head) => {
+function handleUpgrade(req, socket, head) {
   const { pathname } = new URL(req.url, "http://localhost");
   const prefix = proxiedPrefix(pathname);
   if (!prefix) return socket.destroy();
@@ -129,10 +128,32 @@ server.on("upgrade", (req, socket, head) => {
   });
   upstream.on("error", () => socket.destroy());
   socket.on("error", () => upstream.destroy());
-});
+}
+
+const httpServer = NodeHttp.createServer(handleRequest).on("upgrade", handleUpgrade);
+const httpsServer =
+  tls === null ? null : NodeHttps.createServer(tls, handleRequest).on("upgrade", handleUpgrade);
+
+// Every TLS connection opens with a handshake record (0x16), so one port can take both.
+function acceptHttpAndHttps(socket) {
+  socket.once("data", (chunk) => {
+    socket.pause();
+    socket.unshift(chunk);
+    (chunk[0] === 0x16 ? httpsServer : httpServer).emit("connection", socket);
+    process.nextTick(() => socket.resume());
+  });
+  socket.on("error", () => socket.destroy());
+}
+
+const server =
+  httpsServer === null
+    ? httpServer
+    : values["allow-http"]
+      ? NodeNet.createServer(acceptHttpAndHttps)
+      : httpsServer;
 
 server.listen(listen.port, listen.host, () => {
   console.log(
-    `AlgoAI web on ${tls === null ? "http" : "https"}://${listen.host}:${listen.port} -> T3 server ${backend.host}:${backend.port}`,
+    `AlgoAI web on ${httpsServer === null ? "http" : values["allow-http"] ? "http+https" : "https"}://${listen.host}:${listen.port} -> T3 server ${backend.host}:${backend.port}`,
   );
 });
