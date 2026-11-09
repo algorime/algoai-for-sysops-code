@@ -45,7 +45,7 @@ The branded web client is served on `algodev01` at `http://100.100.0.12:3780` by
 
 - **What:** `scripts/algoai-web.mjs`, a small Node server that serves `apps/web/dist` and proxies `/api`, `/ws`, `/oauth`, `/.well-known` and `/mcp` (the same prefixes as `packages/shared/src/devProxy.ts`) to an existing T3 server. Run: `node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773`.
 - **Why:** the branded client must work on the same server, data and providers as the official clients, without running a second server or changing the official one.
-- **Files:** new: `scripts/algoai-web.mjs`.
+- **Files:** new: `scripts/algoai-web.mjs`; changed: `knip.jsonc` (one entry under `scripts`, so knip knows the script is run by the service).
 - **Commits:** `7a1123ab82` on `algoai/v0.1.7`, `63aa151874` on `main`.
 
 ### 3. This file
