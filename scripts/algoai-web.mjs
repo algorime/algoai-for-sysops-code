@@ -4,17 +4,17 @@
 // works on the server's own projects, threads, providers and environments.
 //
 //   node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773
-import * as fs from "node:fs";
-import * as http from "node:http";
-import * as net from "node:net";
-import * as path from "node:path";
-import { parseArgs } from "node:util";
+import * as NodeFS from "node:fs";
+import * as NodeHttp from "node:http";
+import * as NodeNet from "node:net";
+import * as NodePath from "node:path";
+import * as NodeUtil from "node:util";
 
-const { values } = parseArgs({
+const { values } = NodeUtil.parseArgs({
   options: {
     listen: { type: "string", default: "100.100.0.12:3780" },
     backend: { type: "string", default: "100.100.0.12:3773" },
-    dist: { type: "string", default: path.join(import.meta.dirname, "../apps/web/dist") },
+    dist: { type: "string", default: NodePath.join(import.meta.dirname, "../apps/web/dist") },
   },
 });
 
@@ -24,7 +24,7 @@ const splitHostPort = (value) => {
 };
 const listen = splitHostPort(values.listen);
 const backend = splitHostPort(values.backend);
-const distRoot = path.resolve(values.dist);
+const distRoot = NodePath.resolve(values.dist);
 
 // Same lists as packages/shared/src/devProxy.ts, which Vite uses for single-origin dev.
 const PROXIED_PREFIXES = ["/api", "/oauth", "/.well-known", "/ws", "/mcp"];
@@ -54,30 +54,30 @@ const CONTENT_TYPES = {
 };
 
 function serveStatic(req, res, pathname) {
-  let filePath = path.join(distRoot, decodeURIComponent(pathname));
+  let filePath = NodePath.join(distRoot, decodeURIComponent(pathname));
   if (
-    !filePath.startsWith(distRoot + path.sep) ||
-    !fs.existsSync(filePath) ||
-    fs.statSync(filePath).isDirectory()
+    !filePath.startsWith(distRoot + NodePath.sep) ||
+    !NodeFS.existsSync(filePath) ||
+    NodeFS.statSync(filePath).isDirectory()
   ) {
     // Client-side routes all render the SPA shell.
-    filePath = path.join(distRoot, "index.html");
+    filePath = NodePath.join(distRoot, "index.html");
   }
   const isHashedAsset = pathname.startsWith("/assets/");
   res.writeHead(200, {
-    "content-type": CONTENT_TYPES[path.extname(filePath)] ?? "application/octet-stream",
+    "content-type": CONTENT_TYPES[NodePath.extname(filePath)] ?? "application/octet-stream",
     "cache-control": isHashedAsset ? "public, max-age=31536000, immutable" : "no-cache",
   });
   if (req.method === "HEAD") return res.end();
-  fs.createReadStream(filePath).pipe(res);
+  NodeFS.createReadStream(filePath).pipe(res);
 }
 
-const server = http.createServer((req, res) => {
+const server = NodeHttp.createServer((req, res) => {
   const { pathname } = new URL(req.url, "http://localhost");
   const prefix = proxiedPrefix(pathname);
   if (!prefix) return serveStatic(req, res, pathname);
 
-  const upstream = http.request(
+  const upstream = NodeHttp.request(
     {
       host: backend.host,
       port: backend.port,
@@ -102,7 +102,7 @@ server.on("upgrade", (req, socket, head) => {
   const prefix = proxiedPrefix(pathname);
   if (!prefix) return socket.destroy();
 
-  const upstream = net.connect(backend.port, backend.host, () => {
+  const upstream = NodeNet.connect(backend.port, backend.host, () => {
     const headers = backendHeaders(req, prefix);
     const lines = [`${req.method} ${req.url} HTTP/${req.httpVersion}`];
     for (const [name, value] of Object.entries(headers)) {

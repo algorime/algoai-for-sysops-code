@@ -40,6 +40,8 @@
         "prepare-server-compile-cache.cjs",
         "smoke-desktop-app.ts",
         "verify-windows-desktop-artifact.ts",
+        // AlgoAI for SysOps: run by algoai-web.service, see ALGOAI.md.
+        "algoai-web.mjs",
       ],
       "ignoreDependencies": ["esbuild"],
       // The `t3` npm package's files: copied into the package, never imported.
