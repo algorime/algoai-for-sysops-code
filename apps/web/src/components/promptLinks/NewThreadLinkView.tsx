@@ -145,7 +145,7 @@ export function NewThreadLinkView({ link }: { readonly link: NewThreadLink }) {
       replace: true,
     }).catch(() => null);
     if (opened === null) {
-      setState({ status: "failed", message: gt("T3 Code could not open a new thread.") });
+      setState({ status: "failed", message: gt("AlgoAI for SysOps could not open a new thread.") });
       return;
     }
     setState({ status: "opened" });

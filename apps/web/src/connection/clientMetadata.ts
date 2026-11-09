@@ -88,7 +88,7 @@ export function clientPresentationMetadata(input: {
 
   return {
     // oxlint-disable-next-line t3code/no-untranslated-copy -- client label stored on the server
-    label: "T3 Code Web",
+    label: "AlgoAI for SysOps Web",
     deviceType: browserDeviceType(input.identity),
     os: browserClientOs(input.identity),
     surface: "web",
