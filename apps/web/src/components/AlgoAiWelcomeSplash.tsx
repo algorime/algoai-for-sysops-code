@@ -43,7 +43,8 @@ export function AlgoAiWelcomeSplash() {
             AlgoAI for SysOps and DevOps
           </h2>
           <p id="algoai-welcome-description" className="text-base text-muted-foreground">
-            The Algorime environment for AI applications that will change your development strategy
+            The Algorime AI environment for SysOps and DevOps activities that will change your
+            project and development strategy. Enjoy it!
           </p>
         </div>
         <AlertDialogFooter>
