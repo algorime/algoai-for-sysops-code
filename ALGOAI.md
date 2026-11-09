@@ -48,7 +48,15 @@ The branded web client is served on `algodev01` at `http://100.100.0.12:3780` by
 - **Files:** new: `scripts/algoai-web.mjs`; changed: `knip.jsonc` (one entry under `scripts`, so knip knows the script is run by the service).
 - **Commits:** `7a1123ab82` on `algoai/v0.1.7`, `63aa151874` on `main`.
 
-### 3. This file
+### 3. T3 Code's MIT notice and origin in Settings → Legal
+
+- **What:** T3 Code's own license notice (from `LICENSE`) is added to the in-app list under Settings → Legal → Open source licenses. A new row "Based on T3 Code" in the same Legal section says the app is Algorime's modified version of T3 Code by T3 Tools Inc., used under the MIT License and not an official T3 Code release, with a link to the upstream repo. The row is findable in settings search.
+- **Why:** MIT requires T3 Tools' copyright and permission notice in every copy, and upstream's build lists only third-party notices. The row states the origin plainly, so nobody takes the app for an official T3 product. Answers [algorime/algoai-for-sysops#3](https://github.com/algorime/algoai-for-sysops/issues/3).
+- **Files:**
+  - new: `apps/web/src/components/settings/BasedOnT3CodeSettingsRow.tsx`
+  - changed: `third-party-licenses.config.json` (one `customNotices` entry), `apps/web/src/components/settings/settingsSearch.ts` (one search entry), `apps/web/src/components/settings/SettingsPanels.tsx` (import and one row in the Legal section)
+
+### 4. This file
 
 - **What:** `ALGOAI.md`, the list of changes.
 - **Files:** new: `ALGOAI.md`.

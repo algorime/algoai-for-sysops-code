@@ -32,6 +32,7 @@ import { APP_VERSION, HOSTED_APP_CHANNEL, HOSTED_APP_CHANNEL_LABEL } from "../..
 import { AboutVersionTitle } from "./AboutVersionTitle";
 import { CliCommandSettingsRow } from "./CliCommandSettingsRow";
 import { MobileAppSettingsRow } from "./MobileAppSettingsRow";
+import { BasedOnT3CodeSettingsRow } from "./BasedOnT3CodeSettingsRow";
 import {
   canCheckForUpdate,
   getDesktopUpdateButtonTooltip,
@@ -2043,6 +2044,7 @@ export function AboutSettingsPanel() {
       </SettingsSection>
 
       <SettingsSection id="legal" title="Legal">
+        <BasedOnT3CodeSettingsRow />
         <SettingsRow
           {...searchableSetting("privacy-policy")}
           description={
