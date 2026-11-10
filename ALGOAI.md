@@ -22,19 +22,20 @@ git diff v0.1.7 algoai/v0.1.7
 
 ## Deployment
 
-The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (certificate from Algorime's private CA) and `http://100.100.0.12:3780`, by the systemd user service `algoai-web.service`, in front of the existing T3 Code server on `100.100.0.12:3773`. It works on that server's projects, threads, providers and environments. The server itself is the official T3 Code build and is not built from this repo.
+The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (certificate from Algorime's private CA; `http://` on the same port redirects there), by the systemd user service `algoai-web.service`, in front of the existing T3 Code server on `100.100.0.12:3773`. It works on that server's projects, threads, providers and environments. The server itself is the official T3 Code build and is not built from this repo.
 
-| Deploy tag        | Branch          | Upstream base | Notes                                                                     |
-| ----------------- | --------------- | ------------- | ------------------------------------------------------------------------- |
-| `algoai-v0.1.7-1` | `algoai/v0.1.7` | `v0.1.7`      | first branded client                                                      |
-| `algoai-v0.1.7-2` | `algoai/v0.1.7` | `v0.1.7`      | T3 Code's MIT notice and origin row in Settings → Legal                   |
-| `algoai-v0.1.7-3` | `algoai/v0.1.7` | `v0.1.7`      | Based on T3 Code description within 200 characters (upstream lint rule)   |
-| `algoai-v0.1.7-4` | `algoai/v0.1.7` | `v0.1.7`      | welcome screen on every page load                                         |
-| `algoai-v0.1.7-5` | `algoai/v0.1.7` | `v0.1.7`      | new Built By Algorime logo and welcome subtitle                           |
-| `algoai-v0.1.7-6` | `algoai/v0.1.7` | `v0.1.7`      | logo on dark blue, border around the welcome screen                       |
-| `algoai-v0.1.7-7` | `algoai/v0.1.7` | `v0.1.7`      | app's own messages say AlgoAI for SysOps; no upstream star or issue links |
-| `algoai-v0.1.7-8` | `algoai/v0.1.7` | `v0.1.7`      | web front serves HTTPS                                                    |
-| `algoai-v0.1.7-9` | `algoai/v0.1.7` | `v0.1.7`      | HTTP and HTTPS on the same port                                           |
+| Deploy tag         | Branch          | Upstream base | Notes                                                                     |
+| ------------------ | --------------- | ------------- | ------------------------------------------------------------------------- |
+| `algoai-v0.1.7-1`  | `algoai/v0.1.7` | `v0.1.7`      | first branded client                                                      |
+| `algoai-v0.1.7-2`  | `algoai/v0.1.7` | `v0.1.7`      | T3 Code's MIT notice and origin row in Settings → Legal                   |
+| `algoai-v0.1.7-3`  | `algoai/v0.1.7` | `v0.1.7`      | Based on T3 Code description within 200 characters (upstream lint rule)   |
+| `algoai-v0.1.7-4`  | `algoai/v0.1.7` | `v0.1.7`      | welcome screen on every page load                                         |
+| `algoai-v0.1.7-5`  | `algoai/v0.1.7` | `v0.1.7`      | new Built By Algorime logo and welcome subtitle                           |
+| `algoai-v0.1.7-6`  | `algoai/v0.1.7` | `v0.1.7`      | logo on dark blue, border around the welcome screen                       |
+| `algoai-v0.1.7-7`  | `algoai/v0.1.7` | `v0.1.7`      | app's own messages say AlgoAI for SysOps; no upstream star or issue links |
+| `algoai-v0.1.7-8`  | `algoai/v0.1.7` | `v0.1.7`      | web front serves HTTPS                                                    |
+| `algoai-v0.1.7-9`  | `algoai/v0.1.7` | `v0.1.7`      | HTTP and HTTPS on the same port                                           |
+| `algoai-v0.1.7-10` | `algoai/v0.1.7` | `v0.1.7`      | HTTP redirects to HTTPS                                                   |
 
 ## Changes
 
@@ -51,7 +52,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 
 ### 2. Web front for an existing T3 server
 
-- **What:** `scripts/algoai-web.mjs`, a small Node server that serves `apps/web/dist` and proxies `/api`, `/ws`, `/oauth`, `/.well-known` and `/mcp` (the same prefixes as `packages/shared/src/devProxy.ts`) to an existing T3 server. Run: `node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773`. With `--tls-cert` and `--tls-key` (PEM files) it serves HTTPS; with `--allow-http` as well, it also takes plain HTTP on the same port, telling the two apart by the first byte of each connection. The hop to the backend stays HTTP on the same host.
+- **What:** `scripts/algoai-web.mjs`, a small Node server that serves `apps/web/dist` and proxies `/api`, `/ws`, `/oauth`, `/.well-known` and `/mcp` (the same prefixes as `packages/shared/src/devProxy.ts`) to an existing T3 server. Run: `node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773`. With `--tls-cert` and `--tls-key` (PEM files) it serves HTTPS; with `--redirect-http` as well, plain HTTP on the same port (told apart by the first byte of each connection) is redirected to HTTPS, so browsers keep one origin and one set of client settings. The hop to the backend stays HTTP on the same host.
 - **Why:** the branded client must work on the same server, data and providers as the official clients, without running a second server or changing the official one.
 - **Files:** new: `scripts/algoai-web.mjs`; changed: `knip.jsonc` (one entry under `scripts`, so knip knows the script is run by the service).
 - **Commits:** `7a1123ab82` on `algoai/v0.1.7`, `63aa151874` on `main`.
