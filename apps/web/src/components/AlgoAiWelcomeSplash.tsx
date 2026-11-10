@@ -46,10 +46,19 @@ export function AlgoAiWelcomeSplash() {
           >
             AlgoAI for SysOps and DevOps
           </h2>
-          <p id="algoai-welcome-description" className="text-base text-muted-foreground">
-            The Algorime AI environment for SysOps and DevOps activities that will change your
-            project and development strategy. Enjoy it!
-          </p>
+          <div
+            id="algoai-welcome-description"
+            className="flex flex-col gap-2 text-base text-muted-foreground"
+          >
+            <p>
+              The Algorime® AI environment for SysOps and DevOps activities that will change your
+              project and development strategy. Enjoy it!
+            </p>
+            <p>
+              This is part of AlgoAI Privé, an AI platform for inference with distributed LLMs,
+              built to keep your data truly private.
+            </p>
+          </div>
         </div>
         <AlertDialogFooter>
           <Button onClick={close}>Close</Button>
