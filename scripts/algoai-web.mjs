@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Serves this fork's web build in front of an existing T3 Code server, proxying backend
 // routes, so the branded client works on that server's data. HTTPS with --tls-cert/--tls-key,
-// plus plain HTTP on the same port with --allow-http.
+// and with --redirect-http plain HTTP on the same port is redirected to HTTPS.
 //   node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773
 import * as NodeFS from "node:fs";
 import * as NodeHttp from "node:http";
@@ -17,7 +17,7 @@ const { values } = NodeUtil.parseArgs({
     dist: { type: "string", default: NodePath.join(import.meta.dirname, "../apps/web/dist") },
     "tls-cert": { type: "string" },
     "tls-key": { type: "string" },
-    "allow-http": { type: "boolean", default: false },
+    "redirect-http": { type: "boolean", default: false },
   },
 });
 
@@ -130,9 +130,17 @@ function handleUpgrade(req, socket, head) {
   socket.on("error", () => upstream.destroy());
 }
 
-const httpServer = NodeHttp.createServer(handleRequest).on("upgrade", handleUpgrade);
 const httpsServer =
   tls === null ? null : NodeHttps.createServer(tls, handleRequest).on("upgrade", handleUpgrade);
+// Browsers keep settings per origin, so plain HTTP only points at the HTTPS one.
+const httpServer =
+  httpsServer === null
+    ? NodeHttp.createServer(handleRequest).on("upgrade", handleUpgrade)
+    : NodeHttp.createServer((req, res) => {
+        const host = req.headers.host ?? `${listen.host}:${listen.port}`;
+        res.writeHead(308, { location: `https://${host}${req.url}` });
+        res.end();
+      }).on("upgrade", (_req, socket) => socket.destroy());
 
 // Every TLS connection opens with a handshake record (0x16), so one port can take both.
 function acceptHttpAndHttps(socket) {
@@ -148,12 +156,12 @@ function acceptHttpAndHttps(socket) {
 const server =
   httpsServer === null
     ? httpServer
-    : values["allow-http"]
+    : values["redirect-http"]
       ? NodeNet.createServer(acceptHttpAndHttps)
       : httpsServer;
 
 server.listen(listen.port, listen.host, () => {
   console.log(
-    `AlgoAI web on ${httpsServer === null ? "http" : values["allow-http"] ? "http+https" : "https"}://${listen.host}:${listen.port} -> T3 server ${backend.host}:${backend.port}`,
+    `AlgoAI web on ${httpsServer === null ? "http" : "https"}://${listen.host}:${listen.port}${server === httpsServer || httpsServer === null ? "" : " (http redirected)"} -> T3 server ${backend.host}:${backend.port}`,
   );
 });
