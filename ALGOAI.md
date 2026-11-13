@@ -59,6 +59,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 | `algoai-v0.1.9-1`  | `algoai/v0.1.9` | `v0.1.9`      | aligned to server 0.1.9; screen-reader author renamed; update script        |
 | `algoai-v0.1.9-2`  | `algoai/v0.1.9` | `v0.1.9`      | Algorime icons for the manifest's 192 and 512 px sizes                      |
 | `algoai-v0.1.9-3`  | `algoai/v0.1.9` | `v0.1.9`      | reports version 0.1.9; banner when client and server versions differ        |
+| `algoai-v0.1.9-4`  | `algoai/v0.1.9` | `v0.1.9`      | downloads at /downloads/; first Android app (APK version code 29909730)     |
 
 ## Changes
 
