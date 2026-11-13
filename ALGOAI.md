@@ -58,6 +58,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 | `algoai-v0.1.7-13` | `algoai/v0.1.7` | `v0.1.7`      | Mobile app row hidden; T3 Code notice named @t3code, sorted alphabetically  |
 | `algoai-v0.1.9-1`  | `algoai/v0.1.9` | `v0.1.9`      | aligned to server 0.1.9; screen-reader author renamed; update script        |
 | `algoai-v0.1.9-2`  | `algoai/v0.1.9` | `v0.1.9`      | Algorime icons for the manifest's 192 and 512 px sizes                      |
+| `algoai-v0.1.9-3`  | `algoai/v0.1.9` | `v0.1.9`      | reports version 0.1.9; banner when client and server versions differ        |
 
 ## Changes
 
@@ -126,3 +127,9 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
   ```
 
 - **Files:** new: `scripts/algoai-update.sh`, `scripts/systemd/algoai-web.service`, `scripts/systemd/algoai-update-check.service`, `scripts/systemd/algoai-update-check.timer`.
+
+### 9. Banner when the client and the server versions differ
+
+- **What:** when the web client's build version (`APP_VERSION`) and the primary T3 server's version differ, in either direction, a warning banner shows at the top of every page: "AlgoAI for SysOps is <client>, the T3 server is <server>", that some features may not work until the client is updated and that the administrator has been notified, with a link to the open update issues in the vault. Close hides it until the next page load; it comes back on each load while the versions differ.
+- **Why:** the server updates itself and the client does not (change 8), and upstream's own mismatch banner only covers a server older than the client. Without this, users would not know their client is behind; the vault issue opened by the hourly check reaches only the repo's watchers.
+- **Files:** new: `apps/web/src/components/AlgoAiVersionBanner.tsx`; changed: `apps/web/src/routes/__root.tsx` (import and one line next to `AlgoAiWelcomeSplash`).
