@@ -77,17 +77,6 @@ export function decodeThirdPartyLicenseManifest(value: unknown): ThirdPartyLicen
   };
 }
 
-const UPSTREAM_NOTICE_NAME = "T3 Code";
-
-// The upstream notice is attribution for this app, not one more dependency, so it leads the list.
-export function presentThirdPartyLicenseEntries(
-  entries: ReadonlyArray<ThirdPartyLicenseEntry>,
-): ReadonlyArray<ThirdPartyLicenseEntry> {
-  const upstream = entries.filter((entry) => entry.name === UPSTREAM_NOTICE_NAME);
-  if (upstream.length === 0) return entries;
-  return [...upstream, ...entries.filter((entry) => entry.name !== UPSTREAM_NOTICE_NAME)];
-}
-
 export function filterThirdPartyLicenseEntries(
   entries: ReadonlyArray<ThirdPartyLicenseEntry>,
   query: string,

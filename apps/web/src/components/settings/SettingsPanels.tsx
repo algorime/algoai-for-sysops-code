@@ -36,7 +36,8 @@ import {
 } from "../../branding";
 import { AboutVersionTitle } from "./AboutVersionTitle";
 import { CliCommandSettingsRow } from "./CliCommandSettingsRow";
-import { MobileAppSettingsRow } from "./MobileAppSettingsRow";
+// AlgoAI for SysOps: the Mobile app row is hidden, see ALGOAI.md.
+// import { MobileAppSettingsRow } from "./MobileAppSettingsRow";
 import { BasedOnT3CodeSettingsRow } from "./BasedOnT3CodeSettingsRow";
 import {
   canCheckForUpdate,
@@ -2045,7 +2046,7 @@ export function AboutSettingsPanel() {
             />
           </>
         )}
-        <MobileAppSettingsRow />
+        {/* AlgoAI for SysOps: hidden. <MobileAppSettingsRow /> */}
       </SettingsSection>
 
       <SettingsSection id="legal" title="Legal">

@@ -719,6 +719,8 @@ export const SETTINGS_SEARCH_ITEMS = [
     title: "Mobile app",
     to: "/settings/about",
     searchTerms: ["phone tablet iPhone iPad iOS Android App Store Google Play QR"],
+    // AlgoAI for SysOps: the row is hidden; this keeps it out of the web client's search.
+    desktopOnly: true,
   },
   {
     id: "privacy-policy",
