@@ -11,7 +11,6 @@ import { useState } from "react";
 import {
   decodeThirdPartyLicenseManifest,
   filterThirdPartyLicenseEntries,
-  presentThirdPartyLicenseEntries,
   formatLicenseBundles,
   thirdPartyLicenseEntryKey,
   type ThirdPartyLicenseEntry,
@@ -229,7 +228,7 @@ export function OpenSourceLicensesPanel() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [openEntryKey, setOpenEntryKey] = useState<string | null>(null);
   const manifest = result._tag === "Success" ? result.value : null;
-  const entries = manifest ? presentThirdPartyLicenseEntries(manifest.entries) : [];
+  const entries = manifest?.entries ?? [];
   const filteredEntries = filterThirdPartyLicenseEntries(entries, query);
   const errorMessage =
     result._tag === "Failure" && !result.waiting

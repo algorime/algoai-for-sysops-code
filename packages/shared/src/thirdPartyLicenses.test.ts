@@ -2,7 +2,6 @@ import { describe, expect, it } from "vite-plus/test";
 
 import {
   decodeThirdPartyLicenseManifest,
-  presentThirdPartyLicenseEntries,
   thirdPartyLicenseEntryKey,
   type ThirdPartyLicenseEntry,
 } from "./thirdPartyLicenses.js";
@@ -36,19 +35,6 @@ describe("third-party license manifests", () => {
         entries: [{ ...ENTRIES[0]!, sourceUrl: "javascript:alert(1)" }],
       }),
     ).toThrow("invalid shape");
-  });
-
-  it("puts the T3 Code notice first and leaves every other notice in place", () => {
-    const upstream: ThirdPartyLicenseEntry = {
-      ...ENTRIES[0]!,
-      kind: "custom",
-      name: "T3 Code",
-      version: null,
-    };
-    const presented = presentThirdPartyLicenseEntries([ENTRIES[0]!, upstream, ENTRIES[1]!]);
-
-    expect(presented.map((entry) => entry.name)).toEqual(["T3 Code", "react", "sample-icons"]);
-    expect(presentThirdPartyLicenseEntries(ENTRIES)).toBe(ENTRIES);
   });
 
   it("uses distinct navigation keys when names and versions contain delimiters", () => {
