@@ -90,7 +90,9 @@ done
 log "installing and building"
 . "$HOME/.config/vite-plus/env"
 vp i >/dev/null || die "vp i failed in $worktree"
-(cd apps/web && npx vp build >/dev/null) || die "the build failed in $worktree"
+# Upstream's package.json lags its tags (v0.1.9 says 0.1.8) and its release sets APP_VERSION;
+# set it here too, or the client reports the wrong version and warns of a mismatch.
+(cd apps/web && APP_VERSION="$server" npx vp build >/dev/null) || die "the build failed in $worktree"
 
 log "switching $SERVICE to $worktree"
 ln -sfn "$worktree" "$current_link"

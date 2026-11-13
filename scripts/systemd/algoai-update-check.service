@@ -1,0 +1,8 @@
+[Unit]
+Description=AlgoAI for SysOps: open a vault issue when the web client and the T3 server versions differ
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/.t3/projects/algoai-for-sysops-code-current
+ExecStart=%h/.t3/projects/algoai-for-sysops-code-current/scripts/algoai-update.sh --notify
+SuccessExitStatus=1

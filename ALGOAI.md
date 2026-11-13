@@ -35,7 +35,7 @@ Then, by hand:
 - Look for new upstream text in which the app calls itself "T3 Code", and classify it as change 5 does.
 - Add the deploy row to this file, push the branch and tag to `origin`, cherry-pick any new commits onto `main`, and update the vault.
 
-Every hour a systemd user timer runs `scripts/algoai-update.sh --notify`: when the versions differ, it opens an issue in the vault repo (once), so a server update is not missed.
+Every hour a systemd user timer (in `scripts/systemd/`, see change 8) runs `scripts/algoai-update.sh --notify`: when the versions differ, it opens an issue in the vault repo (once), so a server update is not missed. Users of the web client see the mismatch too, in the banner of change 9.
 
 ## Deployment
 
@@ -115,4 +115,14 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 
 - **What:** `scripts/algoai-update.sh`, which moves the client to the server's version (see "Updating to a new server version"), checks whether the two match (`--check`) and opens a vault issue when they do not (`--notify`).
 - **Why:** the server updates itself and the client does not; the client stayed on 0.1.7 while the server moved to 0.1.8 and then 0.1.9. Answers [algorime/algoai-for-sysops#2](https://github.com/algorime/algoai-for-sysops/issues/2).
-- **Files:** new: `scripts/algoai-update.sh`.
+- **Version of the build:** upstream's `apps/web/package.json` lags its tags (at `v0.1.9` it says `0.1.8`) and upstream's release sets `APP_VERSION` instead, so the script builds with `APP_VERSION=<server version>`; otherwise the client reports the wrong version and change 9 warns of a mismatch.
+- **systemd units:** `scripts/systemd/` holds the user units installed on `algodev01`: `algoai-web.service` (the web front) and `algoai-update-check.timer` with `algoai-update-check.service` (hourly `--notify`). They use `%h` for the home folder. To install or re-install them:
+
+  ```bash
+  cp scripts/systemd/* ~/.config/systemd/user/
+  systemctl --user daemon-reload
+  systemctl --user enable --now algoai-web.service algoai-update-check.timer
+  loginctl enable-linger "$USER"
+  ```
+
+- **Files:** new: `scripts/algoai-update.sh`, `scripts/systemd/algoai-web.service`, `scripts/systemd/algoai-update-check.service`, `scripts/systemd/algoai-update-check.timer`.
