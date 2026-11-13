@@ -3,7 +3,7 @@ import { ScreenScrollView as ScrollView } from "../../components/ui/ScreenScroll
 import Constants from "expo-constants";
 import { settlePromise } from "@t3tools/client-runtime/state/runtime";
 import { useRef, useState } from "react";
-import { Pressable, View } from "react-native";
+import { Linking, Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AppText as Text } from "../../components/ui/AppText";
@@ -18,6 +18,9 @@ import {
 import { SettingsRow } from "./components/SettingsRow";
 import { SettingsSection } from "./components/SettingsSection";
 import { SettingsScreen } from "./components/SettingsScreen";
+
+// AlgoAI for SysOps: the app's origin, stated next to the license notices as its MIT attribution.
+const T3_CODE_URL = "https://github.com/pingdotgg/t3code";
 
 export function SettingsAboutRouteScreen() {
   const insets = useSafeAreaInsets();
@@ -119,7 +122,7 @@ function AppSettingsSection() {
   );
 
   return (
-    <SettingsSection title="App">
+    <SettingsSection title="AlgoAI for SysOps">
       <SettingsRow icon="internaldrive" label="Client Storage" target="SettingsClientStorage" />
       <SettingsRow icon="stethoscope" label="Diagnostics" target="SettingsDiagnostics" />
       <SettingsRow
@@ -127,7 +130,16 @@ function AppSettingsSection() {
         label="Open source licenses"
         target="SettingsOpenSourceLicenses"
       />
+      {/* AlgoAI for SysOps: T3 Code's own legal documents do not cover this app.
       <SettingsRow icon="doc.text" label="Legal" fullScreenTarget="SettingsLegal" />
+      */}
+      <SettingsRow
+        icon="doc.text"
+        label="Based on T3 Code"
+        value="Algorime's modified version of T3 Code by T3 Tools Inc., used under the MIT License. Not an official T3 Code release. Its notice is listed as @t3code under Open source licenses."
+        valuePosition="below"
+        onPress={() => void Linking.openURL(T3_CODE_URL)}
+      />
       {updateCheckAvailable ? (
         <Pressable
           accessibilityLabel={`Version ${versionLabel}`}
