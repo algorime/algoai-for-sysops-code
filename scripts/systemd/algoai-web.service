@@ -1,0 +1,15 @@
+[Unit]
+Description=AlgoAI for SysOps web client (branded T3 Code web in front of t3code.service)
+After=t3code.service
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.t3/projects/algoai-for-sysops-code-current
+ExecStart=%h/.local/share/skills-node/bin/node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773 --tls-cert %h/.t3/projects/algoai-for-sysops/secrets/algoai-web-tls/server.crt --tls-key %h/.t3/projects/algoai-for-sysops/secrets/algoai-web-tls/server.key --redirect-http
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
