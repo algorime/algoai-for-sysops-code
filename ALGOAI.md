@@ -13,16 +13,33 @@ The rules are in the vault's ADR [Customisations are a patch series on upstream 
 - Each customisation is one small commit titled `algoai: <what>`, which also updates this file.
 - Each deployed build is tagged `algoai-v<version>-<n>`.
 
-List our commits and the full difference from upstream:
+List our commits and the full difference from upstream (commit hashes differ on each branch, so this is where to find a change's commit):
 
 ```bash
-git log --oneline v0.1.7..algoai/v0.1.7
-git diff v0.1.7 algoai/v0.1.7
+git log --oneline v0.1.9..algoai/v0.1.9
+git diff v0.1.9 algoai/v0.1.9
 ```
+
+## Updating to a new server version
+
+The T3 server updates itself; the client must follow, because its build must match the server's version. `scripts/algoai-update.sh` (change 8) does it:
+
+1. It reads the server's version from `~/.t3/runtime/service-state.json` and the client's from the `algoai-for-sysops-code-current` symlink next to the clone, which points at the served worktree `algoai-for-sysops-code-v<version>`.
+2. It fetches upstream's tags, makes `algoai/v<new>` from tag `v<new>` in a new worktree and cherry-picks our commits from `algoai/v<old>`. Where upstream changed the same lines, git reuses a resolution recorded earlier (`rerere`, often recorded on `main`); otherwise the script stops, and the old client keeps running.
+3. After a stop, resolve the conflict in the new worktree (keep upstream's change, re-apply ours) and run the script again: it resumes on the existing branch.
+4. It installs, builds, points the symlink at the new worktree, restarts `algoai-web.service`, checks that the new build is served (or switches back) and tags it `algoai-v<new>-1`.
+
+Then, by hand:
+
+- Run `npm run -s check:changed -- v<new>` in the new worktree, and review the commits where a resolution was reused: the script names them.
+- Look for new upstream text in which the app calls itself "T3 Code", and classify it as change 5 does.
+- Add the deploy row to this file, push the branch and tag to `origin`, cherry-pick any new commits onto `main`, and update the vault.
+
+Every hour a systemd user timer runs `scripts/algoai-update.sh --notify`: when the versions differ, it opens an issue in the vault repo (once), so a server update is not missed.
 
 ## Deployment
 
-The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (certificate from Algorime's private CA; `http://` on the same port redirects there), by the systemd user service `algoai-web.service`, in front of the existing T3 Code server on `100.100.0.12:3773`. It works on that server's projects, threads, providers and environments. The server itself is the official T3 Code build and is not built from this repo.
+The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (certificate from Algorime's private CA; `http://` on the same port redirects there), by the systemd user service `algoai-web.service` (which runs from the `algoai-for-sysops-code-current` symlink), in front of the existing T3 Code server on `100.100.0.12:3773`. It works on that server's projects, threads, providers and environments. The server itself is the official T3 Code build and is not built from this repo.
 
 | Deploy tag         | Branch          | Upstream base | Notes                                                                       |
 | ------------------ | --------------- | ------------- | --------------------------------------------------------------------------- |
@@ -39,6 +56,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 | `algoai-v0.1.7-11` | `algoai/v0.1.7` | `v0.1.7`      | welcome text mentions AlgoAI Privé                                          |
 | `algoai-v0.1.7-12` | `algoai/v0.1.7` | `v0.1.7`      | About heading says AlgoAI for SysOps; T3 Code notice leads the license list |
 | `algoai-v0.1.7-13` | `algoai/v0.1.7` | `v0.1.7`      | Mobile app row hidden; T3 Code notice named @t3code, sorted alphabetically  |
+| `algoai-v0.1.9-1`  | `algoai/v0.1.9` | `v0.1.9`      | aligned to server 0.1.9; screen-reader author renamed; update script        |
 
 ## Changes
 
@@ -50,7 +68,6 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
   - new: `apps/web/src/components/AlgorimeMark.tsx`, `assets/algorime/algorime-mark-64.png` (64 px, generated from the 512 px Algorime icon kept in the vault's `sources/`)
   - changed: `apps/web/src/components/sidebar/SidebarChrome.tsx` (`SidebarBrand`, `SidebarBrandMark`), `apps/web/src/components/ui/standalone-page.tsx` (`StandalonePageHeader`), `apps/web/src/branding.ts` (`APP_BASE_NAME`), `apps/web/index.html` (title, splash labels), `apps/web/public/manifest.webmanifest` (name, short name)
   - replaced images: `apps/web/public/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`; on `main` also `icon-192x192.png` and `icon-512x512.png`, which `v0.1.7` does not have
-- **Commits:** `1d7983d531` on `algoai/v0.1.7`, `15b43201c7` on `main`.
 - **Not covered:** production and desktop builds would still swap the T3 icons back in through `scripts/apply-web-brand-assets.ts`; only the web build is branded. The remaining names are handled by change 5.
 
 ### 2. Web front for an existing T3 server
@@ -58,7 +75,6 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 - **What:** `scripts/algoai-web.mjs`, a small Node server that serves `apps/web/dist` and proxies `/api`, `/ws`, `/oauth`, `/.well-known` and `/mcp` (the same prefixes as `packages/shared/src/devProxy.ts`) to an existing T3 server. Run: `node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773`. With `--tls-cert` and `--tls-key` (PEM files) it serves HTTPS; with `--redirect-http` as well, plain HTTP on the same port (told apart by the first byte of each connection) is redirected to HTTPS, so browsers keep one origin and one set of client settings. The hop to the backend stays HTTP on the same host.
 - **Why:** the branded client must work on the same server, data and providers as the official clients, without running a second server or changing the official one.
 - **Files:** new: `scripts/algoai-web.mjs`; changed: `knip.jsonc` (one entry under `scripts`, so knip knows the script is run by the service).
-- **Commits:** `7a1123ab82` on `algoai/v0.1.7`, `63aa151874` on `main`.
 
 ### 3. T3 Code's MIT notice and origin in Settings → Legal
 
@@ -93,3 +109,9 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 
 - **What:** `ALGOAI.md`, the list of changes.
 - **Files:** new: `ALGOAI.md`.
+
+### 8. Update script
+
+- **What:** `scripts/algoai-update.sh`, which moves the client to the server's version (see "Updating to a new server version"), checks whether the two match (`--check`) and opens a vault issue when they do not (`--notify`).
+- **Why:** the server updates itself and the client does not; the client stayed on 0.1.7 while the server moved to 0.1.8 and then 0.1.9. Answers [algorime/algoai-for-sysops#2](https://github.com/algorime/algoai-for-sysops/issues/2).
+- **Files:** new: `scripts/algoai-update.sh`.
