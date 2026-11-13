@@ -57,6 +57,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 | `algoai-v0.1.7-12` | `algoai/v0.1.7` | `v0.1.7`      | About heading says AlgoAI for SysOps; T3 Code notice leads the license list |
 | `algoai-v0.1.7-13` | `algoai/v0.1.7` | `v0.1.7`      | Mobile app row hidden; T3 Code notice named @t3code, sorted alphabetically  |
 | `algoai-v0.1.9-1`  | `algoai/v0.1.9` | `v0.1.9`      | aligned to server 0.1.9; screen-reader author renamed; update script        |
+| `algoai-v0.1.9-2`  | `algoai/v0.1.9` | `v0.1.9`      | Algorime icons for the manifest's 192 and 512 px sizes                      |
 
 ## Changes
 
@@ -67,7 +68,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 - **Files:**
   - new: `apps/web/src/components/AlgorimeMark.tsx`, `assets/algorime/algorime-mark-64.png` (64 px, generated from the 512 px Algorime icon kept in the vault's `sources/`)
   - changed: `apps/web/src/components/sidebar/SidebarChrome.tsx` (`SidebarBrand`, `SidebarBrandMark`), `apps/web/src/components/ui/standalone-page.tsx` (`StandalonePageHeader`), `apps/web/src/branding.ts` (`APP_BASE_NAME`), `apps/web/index.html` (title, splash labels), `apps/web/public/manifest.webmanifest` (name, short name)
-  - replaced images: `apps/web/public/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`; on `main` also `icon-192x192.png` and `icon-512x512.png`, which `v0.1.7` does not have
+  - replaced images: `apps/web/public/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`; from `v0.1.9` (and on `main`) also `icon-192x192.png` and `icon-512x512.png`, which `v0.1.7` does not have
 - **Not covered:** production and desktop builds would still swap the T3 icons back in through `scripts/apply-web-brand-assets.ts`; only the web build is branded. The remaining names are handled by change 5.
 
 ### 2. Web front for an existing T3 server
