@@ -118,9 +118,9 @@ const SETTINGS_SEARCH_TERMS = {
     "client storage",
     "cache",
     "legal",
-    "privacy",
-    "terms",
     "open source licenses",
+    "based on t3 code",
+    "algoai for sysops",
   ],
 } satisfies Partial<Record<SettingsPageTarget | "account", readonly string[]>>;
 const termsById: ReadonlyMap<string, readonly string[]> = new Map(
