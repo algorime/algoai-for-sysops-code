@@ -175,6 +175,8 @@ const SETTINGS_SEARCH_TERMS = {
     msg("privacy", { $context: "settings search keyword" }),
     msg("terms", { $context: "settings search keyword" }),
     msg("open source licenses", { $context: "settings search keyword" }),
+    msg("based on t3 code", { $context: "settings search keyword" }),
+    msg("algoai for sysops", { $context: "settings search keyword" }),
   ],
 } satisfies Partial<Record<SettingsPageTarget | "account", readonly string[]>>;
 const termsById: ReadonlyMap<string, readonly string[]> = new Map(
