@@ -22,6 +22,7 @@ import { UseInAnotherAppDialogHost } from "../components/mcp/UseInAnotherAppDial
 import { AddProjectToMachineDialogHost } from "../components/AddProjectToMachineDialog";
 import { ConfirmDialogHost } from "../components/ConfirmDialogHost";
 import { AlgoAiWelcomeSplash } from "../components/AlgoAiWelcomeSplash";
+import { AlgoAiVersionBanner } from "../components/AlgoAiVersionBanner";
 import { DevReplayHost } from "../components/DevReplayHost";
 import { FirstRunGate } from "../components/onboarding/FirstRunGate";
 import { ConnectOnboardingDialog } from "../components/cloud/ConnectOnboardingDialog";
@@ -218,6 +219,7 @@ function RootRouteBranch() {
         >
           {appHosts}
           <AlgoAiWelcomeSplash />
+          <AlgoAiVersionBanner />
           {primaryEnvironmentAuthenticated ? (
             <EventRouter skipInitialBootstrapNavigation={returningFromWelcome} />
           ) : null}
