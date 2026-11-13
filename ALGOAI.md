@@ -75,7 +75,8 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 ### 2. Web front for an existing T3 server
 
 - **What:** `scripts/algoai-web.mjs`, a small Node server that serves `apps/web/dist` and proxies `/api`, `/ws`, `/oauth`, `/.well-known` and `/mcp` (the same prefixes as `packages/shared/src/devProxy.ts`) to an existing T3 server. Run: `node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773`. With `--tls-cert` and `--tls-key` (PEM files) it serves HTTPS; with `--redirect-http` as well, plain HTTP on the same port (told apart by the first byte of each connection) is redirected to HTTPS, so browsers keep one origin and one set of client settings. The hop to the backend stays HTTP on the same host.
-- **Why:** the branded client must work on the same server, data and providers as the official clients, without running a second server or changing the official one.
+- **Downloads:** with `--downloads <folder>`, the files of that folder are listed at `/downloads/` and sent as attachments (never the SPA shell; 404 when missing). The service passes `algoai-for-sysops-code-apk/` next to the clone, which holds the Android APK of change 10 and the private CA certificate. `/downloads/` is answered over plain HTTP too, not redirected, so a phone can fetch the CA certificate before it trusts HTTPS; the traffic stays inside Nebula, which encrypts it.
+- **Why:** the branded client must work on the same server, data and providers as the official clients, without running a second server or changing the official one. The Android app (change 10) needs a place to be downloaded from.
 - **Files:** new: `scripts/algoai-web.mjs`; changed: `knip.jsonc` (one entry under `scripts`, so knip knows the script is run by the service).
 
 ### 3. T3 Code's MIT notice and origin in Settings → Legal

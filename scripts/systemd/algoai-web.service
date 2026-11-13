@@ -7,7 +7,7 @@ StartLimitBurst=5
 [Service]
 Type=simple
 WorkingDirectory=%h/.t3/projects/algoai-for-sysops-code-current
-ExecStart=%h/.local/share/skills-node/bin/node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773 --tls-cert %h/.t3/projects/algoai-for-sysops/secrets/algoai-web-tls/server.crt --tls-key %h/.t3/projects/algoai-for-sysops/secrets/algoai-web-tls/server.key --redirect-http
+ExecStart=%h/.local/share/skills-node/bin/node scripts/algoai-web.mjs --listen 100.100.0.12:3780 --backend 100.100.0.12:3773 --tls-cert %h/.t3/projects/algoai-for-sysops/secrets/algoai-web-tls/server.crt --tls-key %h/.t3/projects/algoai-for-sysops/secrets/algoai-web-tls/server.key --redirect-http --downloads %h/.t3/projects/algoai-for-sysops-code-apk
 Restart=always
 RestartSec=5
 
