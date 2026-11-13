@@ -24,19 +24,20 @@ git diff v0.1.7 algoai/v0.1.7
 
 The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (certificate from Algorime's private CA; `http://` on the same port redirects there), by the systemd user service `algoai-web.service`, in front of the existing T3 Code server on `100.100.0.12:3773`. It works on that server's projects, threads, providers and environments. The server itself is the official T3 Code build and is not built from this repo.
 
-| Deploy tag         | Branch          | Upstream base | Notes                                                                     |
-| ------------------ | --------------- | ------------- | ------------------------------------------------------------------------- |
-| `algoai-v0.1.7-1`  | `algoai/v0.1.7` | `v0.1.7`      | first branded client                                                      |
-| `algoai-v0.1.7-2`  | `algoai/v0.1.7` | `v0.1.7`      | T3 Code's MIT notice and origin row in Settings → Legal                   |
-| `algoai-v0.1.7-3`  | `algoai/v0.1.7` | `v0.1.7`      | Based on T3 Code description within 200 characters (upstream lint rule)   |
-| `algoai-v0.1.7-4`  | `algoai/v0.1.7` | `v0.1.7`      | welcome screen on every page load                                         |
-| `algoai-v0.1.7-5`  | `algoai/v0.1.7` | `v0.1.7`      | new Built By Algorime logo and welcome subtitle                           |
-| `algoai-v0.1.7-6`  | `algoai/v0.1.7` | `v0.1.7`      | logo on dark blue, border around the welcome screen                       |
-| `algoai-v0.1.7-7`  | `algoai/v0.1.7` | `v0.1.7`      | app's own messages say AlgoAI for SysOps; no upstream star or issue links |
-| `algoai-v0.1.7-8`  | `algoai/v0.1.7` | `v0.1.7`      | web front serves HTTPS                                                    |
-| `algoai-v0.1.7-9`  | `algoai/v0.1.7` | `v0.1.7`      | HTTP and HTTPS on the same port                                           |
-| `algoai-v0.1.7-10` | `algoai/v0.1.7` | `v0.1.7`      | HTTP redirects to HTTPS                                                   |
-| `algoai-v0.1.7-11` | `algoai/v0.1.7` | `v0.1.7`      | welcome text mentions AlgoAI Privé                                        |
+| Deploy tag         | Branch          | Upstream base | Notes                                                                       |
+| ------------------ | --------------- | ------------- | --------------------------------------------------------------------------- |
+| `algoai-v0.1.7-1`  | `algoai/v0.1.7` | `v0.1.7`      | first branded client                                                        |
+| `algoai-v0.1.7-2`  | `algoai/v0.1.7` | `v0.1.7`      | T3 Code's MIT notice and origin row in Settings → Legal                     |
+| `algoai-v0.1.7-3`  | `algoai/v0.1.7` | `v0.1.7`      | Based on T3 Code description within 200 characters (upstream lint rule)     |
+| `algoai-v0.1.7-4`  | `algoai/v0.1.7` | `v0.1.7`      | welcome screen on every page load                                           |
+| `algoai-v0.1.7-5`  | `algoai/v0.1.7` | `v0.1.7`      | new Built By Algorime logo and welcome subtitle                             |
+| `algoai-v0.1.7-6`  | `algoai/v0.1.7` | `v0.1.7`      | logo on dark blue, border around the welcome screen                         |
+| `algoai-v0.1.7-7`  | `algoai/v0.1.7` | `v0.1.7`      | app's own messages say AlgoAI for SysOps; no upstream star or issue links   |
+| `algoai-v0.1.7-8`  | `algoai/v0.1.7` | `v0.1.7`      | web front serves HTTPS                                                      |
+| `algoai-v0.1.7-9`  | `algoai/v0.1.7` | `v0.1.7`      | HTTP and HTTPS on the same port                                             |
+| `algoai-v0.1.7-10` | `algoai/v0.1.7` | `v0.1.7`      | HTTP redirects to HTTPS                                                     |
+| `algoai-v0.1.7-11` | `algoai/v0.1.7` | `v0.1.7`      | welcome text mentions AlgoAI Privé                                          |
+| `algoai-v0.1.7-12` | `algoai/v0.1.7` | `v0.1.7`      | About heading says AlgoAI for SysOps; T3 Code notice leads the license list |
 
 ## Changes
 
@@ -81,7 +82,13 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 - **Why:** the fork must not present itself as T3 Code, whose name is T3 Tools' trademark and not covered by MIT, while factual references to T3's products stay accurate. Answers [algorime/algoai-for-sysops#4](https://github.com/algorime/algoai-for-sysops/issues/4).
 - **Files:** one-line text changes in about 25 files under `apps/web/src` (chat rows, onboarding, settings, prompt links, `lib/bootError.ts`, `connection/clientMetadata.ts`, `desktopAppActivation.ts`, `hooks/useStartTriage.ts`), the mark swap in `components/chat/TimelineToolActivityIcon.tsx`, `components/chat/V2LifecycleRow.tsx` and `components/onboarding/WelcomeWizard.tsx`, the removed star prompt call in `components/chat/useComposerSend.ts`, deleted `components/T3Wordmark.tsx`, and the expected text in `components/chat/QueuedRunsControl.browser.test.tsx`.
 
-### 6. This file
+### 6. About heading and the T3 Code notice
+
+- **What:** Settings → About titles its first section "AlgoAI for SysOps" instead of "App". The open-source list still contains T3 Code's MIT notice (it was already generated into `third-party-licenses.json`); that notice is shown first, ahead of the dependency notices, so it is not buried among them.
+- **Why:** the app must not introduce itself as a generic "App", and the Legal row says T3 Code's own notice is under Open source licenses, which has to be visible when that list opens.
+- **Files:** `apps/web/src/components/settings/SettingsPanels.tsx`, `apps/web/src/components/settings/OpenSourceLicenses.tsx`, `packages/shared/src/thirdPartyLicenses.ts`.
+
+### 7. This file
 
 - **What:** `ALGOAI.md`, the list of changes.
 - **Files:** new: `ALGOAI.md`.
