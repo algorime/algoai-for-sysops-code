@@ -38,6 +38,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 | `algoai-v0.1.7-10` | `algoai/v0.1.7` | `v0.1.7`      | HTTP redirects to HTTPS                                                     |
 | `algoai-v0.1.7-11` | `algoai/v0.1.7` | `v0.1.7`      | welcome text mentions AlgoAI Privé                                          |
 | `algoai-v0.1.7-12` | `algoai/v0.1.7` | `v0.1.7`      | About heading says AlgoAI for SysOps; T3 Code notice leads the license list |
+| `algoai-v0.1.7-13` | `algoai/v0.1.7` | `v0.1.7`      | Mobile app row hidden; T3 Code notice named @t3code, sorted alphabetically  |
 
 ## Changes
 
@@ -61,7 +62,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 
 ### 3. T3 Code's MIT notice and origin in Settings → Legal
 
-- **What:** T3 Code's own license notice (from `LICENSE`) is added to the in-app list under Settings → Legal → Open source licenses. A new row "Based on T3 Code" in the same Legal section says the app is Algorime's modified version of T3 Code by T3 Tools Inc., used under the MIT License and not an official T3 Code release, with a link to the upstream repo. The row is findable in settings search.
+- **What:** T3 Code's own license notice (from `LICENSE`) is added to the in-app list under Settings → Legal → Open source licenses, named `@t3code` like the scoped packages around it and sorted with them. A new row "Based on T3 Code" in the same Legal section says the app is Algorime's modified version of T3 Code by T3 Tools Inc., used under the MIT License and not an official T3 Code release, and that its notice is listed as `@t3code`, with a link to the upstream repo. The row is findable in settings search.
 - **Why:** MIT requires T3 Tools' copyright and permission notice in every copy, and upstream's build lists only third-party notices. The row states the origin plainly, so nobody takes the app for an official T3 product. Answers [algorime/algoai-for-sysops#3](https://github.com/algorime/algoai-for-sysops/issues/3).
 - **Files:**
   - new: `apps/web/src/components/settings/BasedOnT3CodeSettingsRow.tsx`
@@ -82,11 +83,11 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 - **Why:** the fork must not present itself as T3 Code, whose name is T3 Tools' trademark and not covered by MIT, while factual references to T3's products stay accurate. Answers [algorime/algoai-for-sysops#4](https://github.com/algorime/algoai-for-sysops/issues/4).
 - **Files:** one-line text changes in about 25 files under `apps/web/src` (chat rows, onboarding, settings, prompt links, `lib/bootError.ts`, `connection/clientMetadata.ts`, `desktopAppActivation.ts`, `hooks/useStartTriage.ts`), the mark swap in `components/chat/TimelineToolActivityIcon.tsx`, `components/chat/V2LifecycleRow.tsx` and `components/onboarding/WelcomeWizard.tsx`, the removed star prompt call in `components/chat/useComposerSend.ts`, deleted `components/T3Wordmark.tsx`, and the expected text in `components/chat/QueuedRunsControl.browser.test.tsx`.
 
-### 6. About heading and the T3 Code notice
+### 6. Settings → About: app name, no Mobile app row
 
-- **What:** Settings → About titles its first section "AlgoAI for SysOps" instead of "App". The open-source list still contains T3 Code's MIT notice (it was already generated into `third-party-licenses.json`); that notice is shown first, ahead of the dependency notices, so it is not buried among them.
-- **Why:** the app must not introduce itself as a generic "App", and the Legal row says T3 Code's own notice is under Open source licenses, which has to be visible when that list opens.
-- **Files:** `apps/web/src/components/settings/SettingsPanels.tsx`, `apps/web/src/components/settings/OpenSourceLicenses.tsx`, `packages/shared/src/thirdPartyLicenses.ts`.
+- **What:** Settings → About titles its first section "AlgoAI for SysOps" instead of "App". The "Mobile app" row (T3 Code's phone app) is not shown: its use in `SettingsPanels.tsx` is commented out, not deleted, and its settings search entry is marked `desktopOnly`, which keeps it out of the web client's search.
+- **Why:** the app must not introduce itself as a generic "App", and T3's mobile app is not part of this product.
+- **Files:** `apps/web/src/components/settings/SettingsPanels.tsx`, `apps/web/src/components/settings/settingsSearch.ts`, `knip.jsonc` (`MobileAppSettingsRow.tsx` listed as an entry, so knip keeps the unused file).
 
 ### 7. This file
 
