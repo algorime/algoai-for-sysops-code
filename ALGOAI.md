@@ -41,25 +41,26 @@ Every hour a systemd user timer (in `scripts/systemd/`, see change 8) runs `scri
 
 The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (certificate from Algorime's private CA; `http://` on the same port redirects there), by the systemd user service `algoai-web.service` (which runs from the `algoai-for-sysops-code-current` symlink), in front of the existing T3 Code server on `100.100.0.12:3773`. It works on that server's projects, threads, providers and environments. The server itself is the official T3 Code build and is not built from this repo.
 
-| Deploy tag         | Branch          | Upstream base | Notes                                                                       |
-| ------------------ | --------------- | ------------- | --------------------------------------------------------------------------- |
-| `algoai-v0.1.7-1`  | `algoai/v0.1.7` | `v0.1.7`      | first branded client                                                        |
-| `algoai-v0.1.7-2`  | `algoai/v0.1.7` | `v0.1.7`      | T3 Code's MIT notice and origin row in Settings → Legal                     |
-| `algoai-v0.1.7-3`  | `algoai/v0.1.7` | `v0.1.7`      | Based on T3 Code description within 200 characters (upstream lint rule)     |
-| `algoai-v0.1.7-4`  | `algoai/v0.1.7` | `v0.1.7`      | welcome screen on every page load                                           |
-| `algoai-v0.1.7-5`  | `algoai/v0.1.7` | `v0.1.7`      | new Built By Algorime logo and welcome subtitle                             |
-| `algoai-v0.1.7-6`  | `algoai/v0.1.7` | `v0.1.7`      | logo on dark blue, border around the welcome screen                         |
-| `algoai-v0.1.7-7`  | `algoai/v0.1.7` | `v0.1.7`      | app's own messages say AlgoAI for SysOps; no upstream star or issue links   |
-| `algoai-v0.1.7-8`  | `algoai/v0.1.7` | `v0.1.7`      | web front serves HTTPS                                                      |
-| `algoai-v0.1.7-9`  | `algoai/v0.1.7` | `v0.1.7`      | HTTP and HTTPS on the same port                                             |
-| `algoai-v0.1.7-10` | `algoai/v0.1.7` | `v0.1.7`      | HTTP redirects to HTTPS                                                     |
-| `algoai-v0.1.7-11` | `algoai/v0.1.7` | `v0.1.7`      | welcome text mentions AlgoAI Privé                                          |
-| `algoai-v0.1.7-12` | `algoai/v0.1.7` | `v0.1.7`      | About heading says AlgoAI for SysOps; T3 Code notice leads the license list |
-| `algoai-v0.1.7-13` | `algoai/v0.1.7` | `v0.1.7`      | Mobile app row hidden; T3 Code notice named @t3code, sorted alphabetically  |
-| `algoai-v0.1.9-1`  | `algoai/v0.1.9` | `v0.1.9`      | aligned to server 0.1.9; screen-reader author renamed; update script        |
-| `algoai-v0.1.9-2`  | `algoai/v0.1.9` | `v0.1.9`      | Algorime icons for the manifest's 192 and 512 px sizes                      |
-| `algoai-v0.1.9-3`  | `algoai/v0.1.9` | `v0.1.9`      | reports version 0.1.9; banner when client and server versions differ        |
-| `algoai-v0.1.9-4`  | `algoai/v0.1.9` | `v0.1.9`      | downloads at /downloads/; first Android app (APK version code 29909730)     |
+| Deploy tag         | Branch           | Upstream base | Notes                                                                       |
+| ------------------ | ---------------- | ------------- | --------------------------------------------------------------------------- |
+| `algoai-v0.1.7-1`  | `algoai/v0.1.7`  | `v0.1.7`      | first branded client                                                        |
+| `algoai-v0.1.7-2`  | `algoai/v0.1.7`  | `v0.1.7`      | T3 Code's MIT notice and origin row in Settings → Legal                     |
+| `algoai-v0.1.7-3`  | `algoai/v0.1.7`  | `v0.1.7`      | Based on T3 Code description within 200 characters (upstream lint rule)     |
+| `algoai-v0.1.7-4`  | `algoai/v0.1.7`  | `v0.1.7`      | welcome screen on every page load                                           |
+| `algoai-v0.1.7-5`  | `algoai/v0.1.7`  | `v0.1.7`      | new Built By Algorime logo and welcome subtitle                             |
+| `algoai-v0.1.7-6`  | `algoai/v0.1.7`  | `v0.1.7`      | logo on dark blue, border around the welcome screen                         |
+| `algoai-v0.1.7-7`  | `algoai/v0.1.7`  | `v0.1.7`      | app's own messages say AlgoAI for SysOps; no upstream star or issue links   |
+| `algoai-v0.1.7-8`  | `algoai/v0.1.7`  | `v0.1.7`      | web front serves HTTPS                                                      |
+| `algoai-v0.1.7-9`  | `algoai/v0.1.7`  | `v0.1.7`      | HTTP and HTTPS on the same port                                             |
+| `algoai-v0.1.7-10` | `algoai/v0.1.7`  | `v0.1.7`      | HTTP redirects to HTTPS                                                     |
+| `algoai-v0.1.7-11` | `algoai/v0.1.7`  | `v0.1.7`      | welcome text mentions AlgoAI Privé                                          |
+| `algoai-v0.1.7-12` | `algoai/v0.1.7`  | `v0.1.7`      | About heading says AlgoAI for SysOps; T3 Code notice leads the license list |
+| `algoai-v0.1.7-13` | `algoai/v0.1.7`  | `v0.1.7`      | Mobile app row hidden; T3 Code notice named @t3code, sorted alphabetically  |
+| `algoai-v0.1.9-1`  | `algoai/v0.1.9`  | `v0.1.9`      | aligned to server 0.1.9; screen-reader author renamed; update script        |
+| `algoai-v0.1.9-2`  | `algoai/v0.1.9`  | `v0.1.9`      | Algorime icons for the manifest's 192 and 512 px sizes                      |
+| `algoai-v0.1.9-3`  | `algoai/v0.1.9`  | `v0.1.9`      | reports version 0.1.9; banner when client and server versions differ        |
+| `algoai-v0.1.9-4`  | `algoai/v0.1.9`  | `v0.1.9`      | downloads at /downloads/; first Android app (APK version code 29909730)     |
+| `algoai-v0.1.11-1` | `algoai/v0.1.11` | `v0.1.11`     | aligned to server 0.1.11; fork's text adapted to upstream's translations    |
 
 ## Changes
 
