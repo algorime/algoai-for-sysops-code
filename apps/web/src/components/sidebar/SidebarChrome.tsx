@@ -189,7 +189,6 @@ function SidebarBrandMark({ onBackdrop }: { onBackdrop: boolean }) {
     <span className="inline-flex min-w-0 items-center gap-1.5 text-sm font-medium tracking-tight">
       <AlgorimeMark className="size-5 shrink-0" />
       <span className="truncate">
-        {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product name */}
         AlgoAI{" "}
         <span className={onBackdrop ? "text-white/70" : "text-muted-foreground"}>
           {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product name */}

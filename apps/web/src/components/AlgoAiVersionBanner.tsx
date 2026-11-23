@@ -2,6 +2,7 @@
 // The server updates itself and this client does not; upstream's own mismatch banner only
 // covers a server older than the client, so a client left behind would go unnoticed.
 import { useAtomValue } from "@effect/atom-react";
+import { T, useGT, Var } from "gt-react";
 import { TriangleAlertIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ function versionCore(version: string): string {
 }
 
 export function AlgoAiVersionBanner() {
+  const gt = useGT();
   const serverVersion = useAtomValue(primaryServerConfigAtom)?.environment.serverVersion;
   const [closed, setClosed] = useState(closedThisPageLoad);
   if (closed || !serverVersion || versionCore(serverVersion) === versionCore(APP_VERSION)) {
@@ -39,10 +41,13 @@ export function AlgoAiVersionBanner() {
         <Alert variant="warning" role="alert">
           <TriangleAlertIcon />
           <AlertTitle>
-            AlgoAI for SysOps is {APP_VERSION}, the T3 server is {serverVersion}
+            <T>
+              AlgoAI for SysOps is <Var>{APP_VERSION}</Var>, the T3 server is{" "}
+              <Var>{serverVersion}</Var>
+            </T>
           </AlertTitle>
           <AlertDescription>
-            <p>
+            <T>
               Some features may not work until the client is updated. The administrator has been
               notified:{" "}
               <a
@@ -54,10 +59,10 @@ export function AlgoAiVersionBanner() {
                 update issue
               </a>
               .
-            </p>
+            </T>
           </AlertDescription>
           <AlertAction>
-            <Button variant="ghost" size="icon-sm" aria-label="Close" onClick={close}>
+            <Button variant="ghost" size="icon-sm" aria-label={gt("Close")} onClick={close}>
               <XIcon />
             </Button>
           </AlertAction>

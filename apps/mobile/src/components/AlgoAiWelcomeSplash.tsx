@@ -1,5 +1,6 @@
 // AlgoAI for SysOps: welcome screen shown over the app on every launch until the user closes it.
 import { Image } from "expo-image";
+import { T, useGT } from "gt-react-native";
 import { useState } from "react";
 import { Linking, Modal, Pressable, View } from "react-native";
 
@@ -14,6 +15,7 @@ const ALGORIME_DARK_BLUE = "#13294B";
 let closedThisLaunch = false;
 
 export function AlgoAiWelcomeSplash() {
+  const gt = useGT();
   const [open, setOpen] = useState(!closedThisLaunch);
   const close = () => {
     closedThisLaunch = true;
@@ -31,12 +33,12 @@ export function AlgoAiWelcomeSplash() {
         >
           <Pressable
             accessibilityRole="link"
-            accessibilityLabel="Algorime website"
+            accessibilityLabel={gt("Algorime website")}
             onPress={() => void Linking.openURL(ALGORIME_URL)}
           >
             <Image
               source={BUILT_BY_ALGORIME_SOURCE}
-              accessibilityLabel="Built by Algorime"
+              accessibilityLabel={gt("Built by Algorime")}
               contentFit="contain"
               style={{ width: 240, height: 96 }}
             />
@@ -45,16 +47,20 @@ export function AlgoAiWelcomeSplash() {
             role="heading"
             className="text-center text-2xl font-t3-bold tracking-[-0.4px] text-foreground"
           >
-            AlgoAI for SysOps and DevOps
+            <T>AlgoAI for SysOps and DevOps</T>
           </Text>
           <View className="gap-2">
             <Text className="text-center text-base text-foreground-muted">
-              The Algorime® AI environment for SysOps and DevOps activities that will change your
-              project and development strategy. Enjoy it!
+              <T>
+                The Algorime® AI environment for SysOps and DevOps activities that will change your
+                project and development strategy. Enjoy it!
+              </T>
             </Text>
             <Text className="text-center text-base text-foreground-muted">
-              This is part of AlgoAI Privé, an AI platform for inference with distributed LLMs,
-              built to keep your data truly private.
+              <T>
+                This is part of AlgoAI Privé, an AI platform for inference with distributed LLMs,
+                built to keep your data truly private.
+              </T>
             </Text>
           </View>
           <Pressable
@@ -63,7 +69,9 @@ export function AlgoAiWelcomeSplash() {
             className="mt-1 rounded-full px-8 py-3"
             style={{ backgroundColor: ALGORIME_DARK_BLUE }}
           >
-            <Text className="text-base font-t3-bold text-white">Close</Text>
+            <Text className="text-base font-t3-bold text-white">
+              <T>Close</T>
+            </Text>
           </Pressable>
         </View>
       </View>

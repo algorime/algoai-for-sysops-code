@@ -648,11 +648,14 @@ function ManagedCodexSetup({
                 ? gt("Using your installed Codex · v{version}.", {
                     version: installation.installedVersion,
                   })
-                : gt("Managed by AlgoAI for SysOps · v{version}.", { version: installation.installedVersion })
+                : gt("Managed by AlgoAI for SysOps · v{version}.", {
+                    version: installation.installedVersion,
+                  })
               : installation?.source === "local"
                 ? gt("Using your installed Codex.")
                 : gt("Managed by AlgoAI for SysOps.")
-            : (installation?.message ?? gt("AlgoAI for SysOps downloads and manages Codex for you."));
+            : (installation?.message ??
+              gt("AlgoAI for SysOps downloads and manages Codex for you."));
   const accountDescription = finishingSignIn ? (
     gt("Finishing sign-in...")
   ) : installActive ? (
@@ -732,7 +735,10 @@ function ManagedCodexSetup({
     !handoff && auth?.phase === "waiting" && url ? (
       <div className="flex w-full flex-col gap-3 text-xs leading-relaxed text-muted-foreground">
         <p>
-          <T>If sign-in doesn't return to AlgoAI for SysOps, paste the URL from the final localhost page.</T>
+          <T>
+            If sign-in doesn't return to AlgoAI for SysOps, paste the URL from the final localhost
+            page.
+          </T>
         </p>
         <form
           className="flex flex-col gap-2 sm:flex-row sm:items-center"

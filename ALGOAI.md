@@ -69,7 +69,7 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
 - **Why:** the fork is presented as Algorime's product. Upstream's names and logos are T3 Tools' trademarks, which the MIT license does not cover, so the fork does not present itself as T3 Code.
 - **Files:**
   - new: `apps/web/src/components/AlgorimeMark.tsx`, `assets/algorime/algorime-mark-64.png` (64 px, generated from the 512 px Algorime icon kept in the vault's `sources/`)
-  - changed: `apps/web/src/components/sidebar/SidebarChrome.tsx` (`SidebarBrand`, `SidebarBrandMark`), `apps/web/src/components/ui/standalone-page.tsx` (`StandalonePageHeader`), `apps/web/src/branding.ts` (`APP_BASE_NAME`), `apps/web/index.html` (title, splash labels), `apps/web/public/manifest.webmanifest` (name, short name)
+  - changed: `apps/web/src/components/sidebar/SidebarChrome.tsx` (`SidebarBrand`, `SidebarBrandMark`), `apps/web/src/components/ui/standalone-page.tsx` (`StandalonePageHeader`), `apps/web/src/branding.ts` (`APP_BASE_NAME`), `apps/web/index.html` (title, splash labels), from `v0.1.11` also `apps/web/vite.config.ts` (the base name its `bootstrap-title` plugin stamps into the page title), `apps/web/public/manifest.webmanifest` (name, short name)
   - replaced images: `apps/web/public/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`; from `v0.1.9` (and on `main`) also `icon-192x192.png` and `icon-512x512.png`, which `v0.1.7` does not have
 - **Not covered:** production and desktop builds would still swap the T3 icons back in through `scripts/apply-web-brand-assets.ts`; only the web build is branded. The remaining names are handled by change 5.
 
@@ -154,3 +154,10 @@ The branded web client is served on `algodev01` at `https://100.100.0.12:3780` (
   - new: `apps/mobile/src/components/AlgoAiWelcomeSplash.tsx`, `apps/mobile/src/components/AlgorimeMark.tsx`, `assets/algorime/mobile/` (five icons), `scripts/algoai-mobile-build.sh`
   - changed: `apps/mobile/app.config.ts` and its test, `apps/mobile/src/App.tsx` (one line next to `Dialog.Host`), `components/BrandMark.tsx`, `components/CompactBrandTitle.tsx`, `components/brandAssets.ts`, `features/settings/SettingsAboutRouteScreen.tsx`, `features/settings/settings-search.ts`, `features/threads/thread-work-log.tsx`, one-line text changes in about 15 files under `apps/mobile/src` and in two Android modules (`t3-native-controls`, `t3-composer-editor`), `third-party-licenses.config.json` (`@t3code` also in the `mobile` bundle)
   - deleted: `apps/mobile/src/components/T3Wordmark.tsx`
+
+### 11. Upstream's translations (from `v0.1.11`)
+
+- **What:** from `v0.1.11` upstream translates the UI with `gt-react` (web) and `gt-react-native` (mobile), and its lint rule `t3code/no-untranslated-copy` rejects text not wrapped in `<T>`, `gt()` or `msg()`. The fork's own text (welcome screen, version banner, "Based on T3 Code" row and search entry, Android welcome screen and About row) is wrapped the same way, and the rule's list of proper nouns, which stay as they are in every language, also holds "AlgoAI for SysOps", "AlgoAI" and "Algorime". The renamed strings of change 5 keep upstream's wrapping with the new English text.
+- **Catalogs are not regenerated:** upstream's catalogs (`apps/{web,mobile}/src/i18n/translations/*.json`) are keyed by a hash of the English text, so a renamed or new string has no translation and shows in English in every language. Regenerating them would add a large diff to every update; `vp run i18n:check` reports the drift and is not run for the fork. There is no Italian catalog upstream.
+- **Why:** keeps the fork's code passing upstream's lint, and its text ready to translate.
+- **Files:** `oxlint-plugin-t3code/rules/no-untranslated-copy.ts` (three names in `PROPER_NOUNS`), the fork's own files listed in changes 3, 4, 9 and 10.

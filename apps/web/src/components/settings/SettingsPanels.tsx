@@ -2532,7 +2532,9 @@ export function AboutSettingsPanel() {
         />
         <SettingsRow
           {...setting("open-source-licenses")}
-          description={gt("Notices for dependencies, assets, and optional tools used by AlgoAI for SysOps.")}
+          description={gt(
+            "Notices for dependencies, assets, and optional tools used by AlgoAI for SysOps.",
+          )}
           control={
             <Button
               render={<Link to="/settings/open-source-licenses" />}

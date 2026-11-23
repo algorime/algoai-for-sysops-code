@@ -1,4 +1,5 @@
 // AlgoAI for SysOps: welcome screen shown over the app on every page load until the user closes it.
+import { T, useGT } from "gt-react";
 import { useState } from "react";
 
 import builtByAlgorimeUrl from "../../../../assets/algorime/built-by-algorime-dark-blue.png";
@@ -13,6 +14,7 @@ const ALGORIME_DARK_BLUE = "#13294B";
 let closedThisPageLoad = false;
 
 export function AlgoAiWelcomeSplash() {
+  const gt = useGT();
   const [open, setOpen] = useState(!closedThisPageLoad);
   const close = () => {
     closedThisPageLoad = true;
@@ -34,34 +36,40 @@ export function AlgoAiWelcomeSplash() {
             href={ALGORIME_URL}
             target="_blank"
             rel="noreferrer noopener"
-            aria-label="Algorime website"
+            aria-label={gt("Algorime website")}
             className="rounded-xl outline-hidden ring-ring focus-visible:ring-2 focus-visible:ring-inset"
           >
-            <img src={builtByAlgorimeUrl} alt="Built by Algorime" className="h-28 w-auto" />
+            <img src={builtByAlgorimeUrl} alt={gt("Built by Algorime")} className="h-28 w-auto" />
           </a>
           {/* The dialog title and description styles are too small for a welcome screen. */}
           <h2
             id="algoai-welcome-title"
             className="text-3xl leading-tight font-semibold tracking-tight"
           >
-            AlgoAI for SysOps and DevOps
+            <T>AlgoAI for SysOps and DevOps</T>
           </h2>
           <div
             id="algoai-welcome-description"
             className="flex flex-col gap-2 text-base text-muted-foreground"
           >
             <p>
-              The Algorime® AI environment for SysOps and DevOps activities that will change your
-              project and development strategy. Enjoy it!
+              <T>
+                The Algorime® AI environment for SysOps and DevOps activities that will change your
+                project and development strategy. Enjoy it!
+              </T>
             </p>
             <p>
-              This is part of AlgoAI Privé, an AI platform for inference with distributed LLMs,
-              built to keep your data truly private.
+              <T>
+                This is part of AlgoAI Privé, an AI platform for inference with distributed LLMs,
+                built to keep your data truly private.
+              </T>
             </p>
           </div>
         </div>
         <AlertDialogFooter>
-          <Button onClick={close}>Close</Button>
+          <Button onClick={close}>
+            <T>Close</T>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogPopup>
     </AlertDialog>

@@ -458,7 +458,9 @@ function ConfiguredSettingsNotificationsRouteScreen() {
 
     Dialog.alert(
       gt("Disable notifications"),
-      gt("Open system Settings to disable notifications for {product}.", { product: "AlgoAI for SysOps" }),
+      gt("Open system Settings to disable notifications for {product}.", {
+        product: "AlgoAI for SysOps",
+      }),
       [
         { text: gt("Cancel"), style: "cancel" },
         { text: gt("Open Settings"), onPress: () => void Linking.openSettings() },

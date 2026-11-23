@@ -36,7 +36,8 @@ export function MultipleAccountsNote({
       <AlertDescription>
         <p>
           <T>
-            We do not recommend managing multiple <Var>{providerName}</Var> accounts in AlgoAI for SysOps.{" "}
+            We do not recommend managing multiple <Var>{providerName}</Var> accounts in AlgoAI for
+            SysOps.{" "}
             <a
               href={MULTIPLE_ACCOUNTS_FAQ_URL}
               target="_blank"

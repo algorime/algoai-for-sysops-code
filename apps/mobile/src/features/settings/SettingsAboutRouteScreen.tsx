@@ -131,15 +131,7 @@ function AppSettingsSection() {
   );
 
   return (
-    // oxlint-disable-next-line t3code/no-untranslated-copy -- product name
     <SettingsSection title="AlgoAI for SysOps">
-      <SettingsRow
-        icon="internaldrive"
-        label={gt("Client Storage")}
-        target="SettingsClientStorage"
-      />
-      <SettingsRow icon="stethoscope" label={gt("Diagnostics")} target="SettingsDiagnostics" />
-
       <SettingsRow
         icon="internaldrive"
         label={gt("Client Storage")}
@@ -156,8 +148,10 @@ function AppSettingsSection() {
       */}
       <SettingsRow
         icon="doc.text"
-        label="Based on T3 Code"
-        value="Algorime's modified version of T3 Code by T3 Tools Inc., used under the MIT License. Not an official T3 Code release. Its notice is listed as @t3code under Open source licenses."
+        label={gt("Based on T3 Code")}
+        value={gt(
+          "Algorime's modified version of T3 Code by T3 Tools Inc., used under the MIT License. Not an official T3 Code release. Its notice is listed as @t3code under Open source licenses.",
+        )}
         valuePosition="below"
         onPress={() => void Linking.openURL(T3_CODE_URL)}
       />

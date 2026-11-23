@@ -59,7 +59,6 @@ export function CompactBrandTitle(
         className="font-t3-medium text-foreground"
         style={{ fontSize: 19 * scale, letterSpacing: -0.4 * scale }}
       >
-        {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product name */}
         AlgoAI for SysOps
       </Text>
       {showStage ? (

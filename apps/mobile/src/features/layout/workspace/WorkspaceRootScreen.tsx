@@ -70,7 +70,10 @@ function WorkspaceRootTitle(props: {
             <SharedSlotTitle tab={state.selectedTab} />
           ) : (
             <CompactBrandTitle
-              accessibilityLabel={gt("{product}, {title}", { product: "AlgoAI for SysOps", title: tabTitle })}
+              accessibilityLabel={gt("{product}, {title}", {
+                product: "AlgoAI for SysOps",
+                title: tabTitle,
+              })}
               fit
             />
           )

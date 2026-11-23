@@ -26,8 +26,8 @@ export function StandalonePageHeader({
       <div className="flex items-baseline justify-between gap-3 text-muted-foreground">
         <span className="flex items-center gap-1.5" role="img" aria-label={APP_BASE_NAME}>
           <AlgorimeMark className="size-6 shrink-0" />
-          {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product name */}
           <span className="text-lg font-medium tracking-tight">
+            {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product name */}
             <span className="text-foreground">AlgoAI</span> for SysOps
           </span>
         </span>
