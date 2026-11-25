@@ -486,6 +486,9 @@ const config: ExpoConfig = {
       tracesToken: repoEnv.EXPO_PUBLIC_OTLP_TRACES_TOKEN ?? null,
     },
     eas: {
+      // AlgoAI for SysOps: not an EAS project. expo-observe's native module throws without a
+      // project ID, which stops the app at the splash screen; reports still go nowhere (see above).
+      projectId: "6300c005-30f7-4a3f-bc5d-a4059b87db6f",
       observe: { endpointUrl: observeEndpointUrl },
     },
   },

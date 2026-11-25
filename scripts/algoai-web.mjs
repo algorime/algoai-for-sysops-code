@@ -38,10 +38,15 @@ const ORIGIN_PRESERVING_PREFIXES = new Set(["/oauth", "/.well-known", "/mcp", "/
 const proxiedPrefix = (pathname) =>
   PROXIED_PREFIXES.find((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
 
-const backendHeaders = (req, prefix) =>
-  ORIGIN_PRESERVING_PREFIXES.has(prefix)
-    ? req.headers
-    : { ...req.headers, host: `${backend.host}:${backend.port}` };
+// The server rebuilds request URLs (DPoP proofs, OAuth, pairing) from Host and X-Forwarded-Proto,
+// so a TLS request must say so, and a DPoP-signed one (the mobile app) keeps its Host: otherwise
+// the proof, signed for https://<this front>, fails as an invalid credential.
+const backendHeaders = (req, prefix) => {
+  const headers = { ...req.headers, "x-forwarded-proto": req.socket.encrypted ? "https" : "http" };
+  return ORIGIN_PRESERVING_PREFIXES.has(prefix) || req.headers.dpop !== undefined
+    ? headers
+    : { ...headers, host: `${backend.host}:${backend.port}` };
+};
 
 const CONTENT_TYPES = {
   ".html": "text/html; charset=utf-8",
